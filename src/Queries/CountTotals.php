@@ -22,10 +22,12 @@ class CountTotals
 
         collect($this->columns)->each(function($column) {
             $columnName = key($column);
-            $columnValue = $column[$columnName];
+            $columnValue = (string) $column[$columnName];
             $alias = Str::camel($columnValue);
 
-            $this->builder->selectRaw("count(case when $columnName = '$columnValue' then 1 end) as $alias");
+            $this->builder->selectRaw("count(case when $columnName = ? then 1 end) as $alias", [
+                $columnValue,
+            ]);
         });
 
         return $this->builder->first();
