@@ -1,0 +1,23 @@
+dist: xenial
+
+language: php
+
+php:
+- 7.1
+- 7.2
+- 7.3
+
+env:
+  matrix:
+  - COMPOSER_FLAGS="--prefer-lowest"
+  - COMPOSER_FLAGS=""
+
+install:
+- travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --no-suggest
+
+script:
+- vendor/bin/phpunit -c phpunit.xml tests/
+
+cache:
+  directories:
+    - $HOME/.composer/cache
